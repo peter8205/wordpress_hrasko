@@ -20,6 +20,7 @@ function petoBear_button_shortcode($atts, $text= 'enter text'){
 if($atts['color']) $atts['color'] = 'btn-'.$atts['color'];
 
 $parsed = wp_parse_url( $atts['link'] );
+//var_dump($parsed);
 
 if (!isset($parsed['scheme'])) {
 	$atts['link'] = home_url( $atts['link']);
@@ -28,4 +29,25 @@ $html = '<a href="'.$atts['link'].'" class="btn '. $atts['color'] .' animate">';
 $html .= $text;
 $html .= '</a>';
 return $html;
+}
+
+
+//povoli shortcode vo widget
+add_filter('widget_text', 'do_shortcode');
+
+
+//register sidebar
+add_action('widgets_init', 'petoBear_widget_init');
+function petoBear_widget_init(){
+	register_sidebar( array(
+	'name' => 'Pre-footer Sidebar',
+	'id' => 'sidebar-priamry',
+	'description' => 'show up under every page',
+	'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+	'after_widget' => '</aside>',
+	'before_title' => '<h3 class="widget-title">',
+	'after_title' => '</h3>',
+
+
+));
 }
